@@ -12,6 +12,17 @@ Interpolacion:
 	$(CC) $(CFLAGS) $@.c -o $@.o
 	$(CC) $@.o $(LFLAGS) -lm -lgsl -lgslcblas -o  $@.x		
 
+dms:
+	echo Estoy compilando $@.c
+	$(CC) $(CFLAGS) $@.c -o $@.o
+	$(CC) $@.o $(LFLAGS) -lm  -o  $@.x		
+
+numeros_aleatorios:
+	echo Estoy compilando $@.c
+	$(CC) $(CFLAGS) $@.c -o $@.o
+	$(CC) $@.o $(LFLAGS) -lm -lgsl -lgslcblas -o  $@.x		
+
+
 debug: 
 	echo Estoy compilando para debugear $@.c
 	$(CC) $(CFLAGSDEBUG) $@.c -o $@.o

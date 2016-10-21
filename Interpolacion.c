@@ -37,24 +37,26 @@ Solucion punto 1 Tarea 4 COMPUTACION CIENTIFICA AVANZADA
 int N;
 double *x, *y;
 
-FILE *in;
-FILE *out1;
-FILE *out2;
-FILE *out3;
-FILE *out4;
-FILE *out5;
-FILE *out6;
-FILE *out7;
+FILE *in = NULL;
+FILE *out1 = NULL;
+FILE *out2 = NULL;
+FILE *out3 = NULL;
+FILE *out4 = NULL;
+FILE *out5 = NULL;
+FILE *out6 = NULL;
+FILE *out7 = NULL;
+
+double value;
+  
+gsl_interp_accel *acelerador;
+gsl_spline *interpolador;
+  
 
 //Funciones///
 
 double interpolador_lineal(double xo)
 {
-  
-  double value;
-  
-  gsl_interp_accel *acelerador;
-  gsl_spline *interpolador;
+
   
   acelerador   = gsl_interp_accel_alloc();
   interpolador = gsl_spline_alloc(gsl_interp_linear, (size_t) N);
@@ -72,12 +74,7 @@ double interpolador_lineal(double xo)
 
 double interpolador_poli(double xo)
 {
-  
-  double value;
-  
-  gsl_interp_accel *acelerador;
-  gsl_spline *interpolador;
-  
+    
   acelerador   = gsl_interp_accel_alloc();
   interpolador = gsl_spline_alloc(gsl_interp_polynomial, (size_t) N);
   gsl_spline_init(interpolador, x, y, (size_t) N);
@@ -94,11 +91,6 @@ double interpolador_poli(double xo)
 double interpolador_cspline(double xo)
 {
   
-  double value;
-  
-  gsl_interp_accel *acelerador;
-  gsl_spline *interpolador;
-  
   acelerador   = gsl_interp_accel_alloc();
   interpolador = gsl_spline_alloc(gsl_interp_cspline, (size_t) N);
   gsl_spline_init(interpolador, x, y, (size_t) N);
@@ -114,12 +106,7 @@ double interpolador_cspline(double xo)
 
 double interpolador_cspline_per(double xo)
 {
-  
-  double value;
-  
-  gsl_interp_accel *acelerador;
-  gsl_spline *interpolador;
-  
+    
   acelerador   = gsl_interp_accel_alloc();
   interpolador = gsl_spline_alloc(gsl_interp_cspline_periodic, (size_t) N);
   gsl_spline_init(interpolador, x, y, (size_t) N);
@@ -135,12 +122,7 @@ double interpolador_cspline_per(double xo)
 
 double interpolador_akima(double xo)
 {
-  
-  double value;
-  
-  gsl_interp_accel *acelerador;
-  gsl_spline *interpolador;
-  
+    
   acelerador   = gsl_interp_accel_alloc();
   interpolador = gsl_spline_alloc(gsl_interp_akima, (size_t) N);
   gsl_spline_init(interpolador, x, y, (size_t) N);
@@ -158,10 +140,6 @@ double interpolador_akima(double xo)
 double interpolador_akima_per(double xo)
 {
   
-  double value;
-  
-  gsl_interp_accel *acelerador;
-  gsl_spline *interpolador;
   
   acelerador   = gsl_interp_accel_alloc();
   interpolador = gsl_spline_alloc(gsl_interp_akima_periodic, (size_t) N);
