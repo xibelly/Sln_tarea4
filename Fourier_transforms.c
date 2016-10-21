@@ -86,7 +86,7 @@ fourier2(int N, fftw_complex *in2)
 
   output1 = fopen("fourier_0.5.dat","w");
 
-   for (i = 0; i < N; i=i+0.5)
+   for (i = 0; i < N; i++)
     {
       fprintf(output1,"%lf %lf\n", out[i][0], out[i][1]);
 
@@ -116,7 +116,7 @@ fourier3(int N, fftw_complex *in3)
 
   output1 = fopen("fourier_0.5.dat","w");
 
-   for (i = 0; i < N; i=i+0.1)
+   for (i = 0; i < N; i++)
     {
       fprintf(output1,"%lf %lf\n", out[i][0], out[i][1]);
 
@@ -142,7 +142,7 @@ int main (int argc, char *argv[])
   
   //Carga de parametros//
   
-  N = 10;
+  N = 20;
 
   x = (double *) malloc(N *sizeof(double));
 
@@ -181,9 +181,9 @@ int main (int argc, char *argv[])
   
   input=fopen("fdex_fourier0.5.dat","w");
   
-  for (i = 0; i < N; i=i+0.5)
+  for (i = 0; i < N; i++)
     {
-      x[i] = dx * i;
+      x[i] = dx * (i+0.5);
 
       in2[i][0] = (x[i]) *sin (x[i]);
 
@@ -200,7 +200,7 @@ int main (int argc, char *argv[])
   
   for (i = 0; i < N; i=i+0.1)
     {
-      x[i] = dx * i;
+      x[i] = dx * (i+0.1);
 
       in3[i][0] = (x[i]) *sin (x[i]);
 
