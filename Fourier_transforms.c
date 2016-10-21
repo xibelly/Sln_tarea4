@@ -29,6 +29,12 @@ c) 0.1
 #include<math.h>
 #include<fftw3.h>
 
+struct SALIDA
+{
+  double salida[2];
+};
+
+struct SALIDA *OUT; 
 
 //Parametros globales//
 
@@ -36,100 +42,46 @@ int N;
 double *x;
 fftw_complex *in1=NULL, *in2=NULL, *in3=NULL;
 
+
 FILE *input = NULL;
-FILE *output1 = NULL;
+FILE *output = NULL;
 
 
-fourier1(int N, fftw_complex *in1)
+//Funciones//
+
+void fourier(int N, fftw_complex *in)
 {
   int i;
   fftw_complex *out=NULL;
   fftw_plan my_plan;
 
- 
+  in  = (fftw_complex *) malloc((size_t) N*sizeof(fftw_complex));
   out  = (fftw_complex *) malloc((size_t) N*sizeof(fftw_complex));
   
-  my_plan = fftw_plan_dft_1d(N, in1, out, FFTW_FORWARD, FFTW_ESTIMATE);
+  my_plan = fftw_plan_dft_1d(N, in, out, FFTW_FORWARD, FFTW_MEASURE);
 
   fftw_execute(my_plan);
 
-  output1 = fopen("fourier_1.dat","w");
-
-   for (i = 0.0; i < N; i++)
+   for(i=0; i<N; i++)
     {
-      fprintf(output1,"%lf %lf\n", out[i][0], out[i][1]);
+      OUT[i].salida[0] = out [i][0];
+	
+      OUT[i].salida[1] = out [i][1];
 
     }
-
-   fftw_destroy_plan(my_plan);
-
-   fftw_free(out);
-
-   printf("THE STATE OF DFT WITH FRECUENCY 1 IS: SUCESS\n");
-
-
-}
-
-
-fourier2(int N, fftw_complex *in2)
-{
-  int i;
-  fftw_complex *out=NULL;
-  fftw_plan my_plan;
-  
-  
-  out  = (fftw_complex *) malloc((size_t) N*sizeof(fftw_complex));
-
-  my_plan = fftw_plan_dft_1d(N, in2, out, FFTW_FORWARD, FFTW_ESTIMATE);
-
-  fftw_execute(my_plan);
-
-  output1 = fopen("fourier_0.5.dat","w");
-
-   for (i = 0; i < N; i++)
-    {
-      fprintf(output1,"%lf %lf\n", out[i][0], out[i][1]);
-
-    }
-
-   fftw_destroy_plan(my_plan);
-
-
-   fftw_free(out);
-
-   printf("THE STATE OF DFT WITH FRECUENCY 0.5 IS: SUCESS\n");
-
-
-}
-
-fourier3(int N, fftw_complex *in3)
-{
-  int i;
-  fftw_complex *out=NULL;
-  fftw_plan my_plan;
-  
-  out  = (fftw_complex *) malloc((size_t) N*sizeof(fftw_complex));
-
-  my_plan = fftw_plan_dft_1d(N, in2, out, FFTW_FORWARD, FFTW_ESTIMATE);
-
-  fftw_execute(my_plan);
-
-  output1 = fopen("fourier_0.5.dat","w");
-
-   for (i = 0; i < N; i++)
-    {
-      fprintf(output1,"%lf %lf\n", out[i][0], out[i][1]);
-
-    }
-
+   
    fftw_destroy_plan(my_plan);
 
    fftw_free(out);
    
-   printf("THE STATE OF DFT WITH FRECUENCY 0.1 IS: SUCESS\n");
-
-
+   
+   printf("THE STATE OF DFT IS: SUCESS\n");
+   
 }
+
+
+
+//Programa Principal
 
 
 int main (int argc, char *argv[])
@@ -145,6 +97,7 @@ int main (int argc, char *argv[])
   N = 20;
 
   x = (double *) malloc(N *sizeof(double));
+  
 
   in1   = (fftw_complex *) malloc((size_t) N*sizeof(fftw_complex));
   
@@ -153,12 +106,13 @@ int main (int argc, char *argv[])
   in3   = (fftw_complex *) malloc((size_t) N*sizeof(fftw_complex));
 
   
+  OUT = (struct SALIDA *) malloc((size_t) N *sizeof(struct SALIDA));
 
   //Se crea la funcion f(x) = x*sin(x)//
 
   //CASO a)
 
-  dx = 2 * M_PI/ N;
+  dx = 2.0 * M_PI/ (1.0 * N);
 
   input=fopen("fdex_fourier1.dat","w");
   
@@ -166,63 +120,95 @@ int main (int argc, char *argv[])
     {
       x[i] = dx * i;
 
-      in1[i][0] = (x[i]) *sin (x[i]);
+      in1[i][0] = x[i] *sin (x[i]);
 
       in1[i][1] = 0.0;
 
-      fprintf(input,"%g %g\n", x[i], in1[i][0]);
+      fprintf(input,"%g %g %g\n", x[i], in1[i][0], in1[i][1]);
+
+      
     }
   fclose(input);
 
+  //Se calculan las respectiva transformada de Fourier//
+
+  fourier(N, in1);
+
+  output = fopen("fourier_transform_1.dat","w");
   
-
+  for (i = 0; i < N; i++)
+    {      
+      fprintf(output,"%lf %lf\n", OUT[i].salida[0], OUT[i].salida[1]);
+      
+    }
+  
+  fclose(output);
+   
+  
   // CASO b)
-
+  
   
   input=fopen("fdex_fourier0.5.dat","w");
   
   for (i = 0; i < N; i++)
     {
       x[i] = dx * (i+0.5);
-
-      in2[i][0] = (x[i]) *sin (x[i]);
-
+      
+      in2[i][0] = x[i] *sin (x[i]);
+      
       in2[i][1] = 0.0;
-
+      
       fprintf(input,"%g %g\n", x[i], in2[i][0]);
     }
   fclose(input);
   
+  
+  fourier(N, in2);
+  
+  output = fopen("fourier_transform_0.5.dat","w");
+  
+  for (i = 0; i < N; i++)
+    {      
+      fprintf(output,"%lf %lf\n", OUT[i].salida[0], OUT[i].salida[1]);
+      
+    }
+  
+  fclose(output);
+  
   // CASO c)
-
+  
   
   input=fopen("fdex_fourier0.1.dat","w");
   
-  for (i = 0; i < N; i=i+0.1)
+  for (i = 0; i < N; i++)
     {
       x[i] = dx * (i+0.1);
 
-      in3[i][0] = (x[i]) *sin (x[i]);
-
+      in3[i][0] = x[i] *sin (x[i]);
+      
       in3[i][1] = 0.0;
-
+      
       fprintf(input,"%g %g\n", x[i], in3[i][0]);
     }
   fclose(input);
+
+  fourier(N, in3);
   
-
-  //Se calculan las respectivas transformadas de Fourier//
-
-  fourier1(N, in1);
-
-  fourier2(N, in2);
-
-  fourier3(N, in3);
-
+  output = fopen("fourier_transform_0.1.dat","w");
+  
+  for (i = 0; i < N; i++)
+    {      
+      fprintf(output,"%lf %lf\n", OUT[i].salida[0], OUT[i].salida[1]);
+      
+    }
+  
+  fclose(output);
+   
+  
   //Se libera memoria usada
-
+  
   free(x);
- 
+  
   fftw_free(in1);
   fftw_free(in2);
   fftw_free(in3);
