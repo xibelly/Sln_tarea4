@@ -22,6 +22,11 @@ numeros_aleatorios:
 	$(CC) $(CFLAGS) $@.c -o $@.o
 	$(CC) $@.o $(LFLAGS) -lm -lgsl -lgslcblas -o  $@.x		
 
+Fourier_transforms:
+	echo Estoy compilando $@.c
+	$(CC) $(CFLAGS) $@.c -o $@.o
+	$(CC) $@.o $(LFLAGS) -lm -lfftw3 -o  $@.x		
+
 
 debug: 
 	echo Estoy compilando para debugear $@.c
