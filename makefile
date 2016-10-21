@@ -25,7 +25,12 @@ numeros_aleatorios:
 Fourier_transforms:
 	echo Estoy compilando $@.c
 	$(CC) $(CFLAGS) $@.c -o $@.o
-	$(CC) $@.o $(LFLAGS) -lm -lfftw3 -o  $@.x		
+	$(CC) $@.o $(LFLAGS) -lm -lfftw3 -o  $@.x
+
+Integracion:
+	echo Estoy compilando $@.c
+	$(CC) $(CFLAGS) $@.c -o $@.o
+	$(CC) $@.o $(LFLAGS) -lm -lgsl -lgslcblas -o  $@.x		
 
 
 debug: 
