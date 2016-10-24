@@ -30,6 +30,7 @@ Solucion punto 1 Tarea 4 COMPUTACION CIENTIFICA AVANZADA
 
 int N;
 char *file;
+FILE *out=NULL;
 
 //Estructuras//
 
@@ -46,13 +47,13 @@ struct data *datos;
 
 //Funciones//
 
-double rms(double f1, double f2)
+double dms(double f1, double f2)
 {
-  double  RMS;
+  double  DMS;
 
-  RMS = (f1 - f2) * (f1 - f2);
+  DMS = (f1 - f2) * (f1 - f2);
 
-  return RMS;
+  return DMS;
 
 }
 
@@ -76,7 +77,6 @@ int main (int argc, char *argv[])
       printf("%s Nline file\n",argv[0]);
       exit(0);  
     }
-
   //Carga de parametros//
 
   N = atoi(argv[1]);
@@ -97,6 +97,8 @@ int main (int argc, char *argv[])
 
   dx = 2 * M_PI/ N;
 
+  out = fopen("fdex_sample.dat","w");
+  
   for(i=0; i<N; i++)
     {
       x = dx * i;
@@ -105,10 +107,11 @@ int main (int argc, char *argv[])
      
       f2 = datos[i].f;
 
-      R = rms(f1, f2);
+      R = dms(f1, f2);
 
       suma = suma + R ;
 
+      fprintf(out,"%lf %lf\n",x, f1);
       
     }
  printf("THE DIFERENCE MEAN SQUARE OF %s IS:\n", file);
