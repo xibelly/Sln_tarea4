@@ -26,8 +26,13 @@ int read_file(char *filename, int N)
   double X, Y;
 
   FILE *pf = NULL;
+
+  printf("READING FILE: %s\n", filename);
   
-  pf = fopen(filename,"r"); 
+  pf = fopen(filename,"r");
+
+  if(pf == NULL)
+    printf("THE %s CAN NOT BE OPENED\n",filename);
   
   datos = (struct data*) malloc(N *sizeof(struct data));
 
