@@ -42,7 +42,15 @@ struct data
   double x, f;
   
 }; 
-struct data *datos; 
+struct data *datos;
+
+struct data_result   
+{
+  double *value;
+  
+}; 
+struct data_result RESULT; 
+
  
 //Llamados a subrutinas//
 
@@ -50,28 +58,33 @@ struct data *datos;
 
 //Funciones//
 
-double random_gfsr4()
+int random_gfsr4(int N)
 {
-  double packet_size;
+  
+  int i;
   long seed;
   gsl_rng *rng;  //generador de # aleatorios
 
-  
+   
   rng = gsl_rng_alloc (gsl_rng_gfsr4);     
   seed = time(NULL)*getpid();    //semilla que cambia con el tiempo
   gsl_rng_set (rng, seed);       //se establce la semilla
   
-  packet_size = gsl_rng_uniform (rng);
+  for(i=0; i<1000; i++)
+    {
+      RESULT.value[i] = gsl_rng_uniform (rng);
+
+    }
  
   gsl_rng_free (rng);                           
  
-  return packet_size;
+  return 0;
   
 }
 
-double random_taus()
+int random_taus(int N)
 {
-  double packet_size;
+  int i;
   long seed;
   gsl_rng *rng;  //generador de # aleatorios
 
@@ -80,17 +93,21 @@ double random_taus()
   seed = time(NULL)*getpid();    //semilla que cambia con el tiempo
   gsl_rng_set (rng, seed);       //se establce la semilla
   
-  packet_size = gsl_rng_uniform (rng);
+  for(i=0; i<1000; i++)
+    {
+      RESULT.value[i] = gsl_rng_uniform (rng);
+
+    }
  
   gsl_rng_free (rng);                           
  
-  return packet_size;
+  return 0;
   
 }
 
-double random_rand48()
+int random_rand48(int N)
 {
-  double packet_size;
+  int i;
   long seed;
   gsl_rng *rng;  //generador de # aleatorios
 
@@ -99,17 +116,21 @@ double random_rand48()
   seed = time(NULL)*getpid();    //semilla que cambia con el tiempo
   gsl_rng_set (rng, seed);       //se establce la semilla
   
-  packet_size = gsl_rng_uniform (rng);
+  for(i=0; i<1000; i++)
+    {
+      RESULT.value[i] = gsl_rng_uniform (rng);
+
+    }
  
   gsl_rng_free (rng);                           
  
-  return packet_size;
+  return 0;
   
 }
 
-double random_mt19937()
+int random_mt19937(int N)
 {
-  double packet_size;
+  int i;
   long seed;
   gsl_rng *rng;  //generador de # aleatorios
 
@@ -118,17 +139,21 @@ double random_mt19937()
   seed = time(NULL)*getpid();    //semilla que cambia con el tiempo
   gsl_rng_set (rng, seed);       //se establce la semilla
   
-  packet_size = gsl_rng_uniform (rng);
+  for(i=0; i<1000; i++)
+    {
+      RESULT.value[i] = gsl_rng_uniform (rng);
+
+    }
  
   gsl_rng_free (rng);                           
  
-  return packet_size;
+  return 0;
   
 }
 
-double random_ranlxs0()
+int random_ranlxs0(int N)
 {
-  double packet_size;
+  int i;
   long seed;
   gsl_rng *rng;  //generador de # aleatorios
 
@@ -137,17 +162,21 @@ double random_ranlxs0()
   seed = time(NULL)*getpid();    //semilla que cambia con el tiempo
   gsl_rng_set (rng, seed);       //se establce la semilla
   
-  packet_size = gsl_rng_uniform (rng);
+  for(i=0; i<1000; i++)
+    {
+      RESULT.value[i] = gsl_rng_uniform (rng);
+
+    }
  
   gsl_rng_free (rng);                           
  
-  return packet_size;
+  return 0;
   
 }
 
-double random_ranlxs1()
+int random_ranlxs1(int N)
 {
-  double packet_size;
+  int i;
   long seed;
   gsl_rng *rng;  //generador de # aleatorios
 
@@ -156,17 +185,21 @@ double random_ranlxs1()
   seed = time(NULL)*getpid();    //semilla que cambia con el tiempo
   gsl_rng_set (rng, seed);       //se establce la semilla
   
-  packet_size = gsl_rng_uniform (rng);
+  for(i=0; i<1000; i++)
+    {
+      RESULT.value[i] = gsl_rng_uniform (rng);
+
+    }
  
   gsl_rng_free (rng);                           
  
-  return packet_size;
+  return 0;
   
 }
 
-double random_mrg()
+int random_mrg(int N)
 {
-  double packet_size;
+  int i;
   long seed;
   gsl_rng *rng;  //generador de # aleatorios
 
@@ -175,17 +208,21 @@ double random_mrg()
   seed = time(NULL)*getpid();    //semilla que cambia con el tiempo
   gsl_rng_set (rng, seed);       //se establce la semilla
   
-  packet_size = gsl_rng_uniform (rng);
+  for(i=0; i<1000; i++)
+    {
+      RESULT.value[i] = gsl_rng_uniform (rng);
+
+    }
  
   gsl_rng_free (rng);                           
  
-  return packet_size;
+  return 0;
   
 }
 
-double random_ranlux()
+int random_ranlux(int N)
 {
-  double packet_size;
+  int i;
   long seed;
   gsl_rng *rng;  //generador de # aleatorios
 
@@ -194,17 +231,21 @@ double random_ranlux()
   seed = time(NULL)*getpid();    //semilla que cambia con el tiempo
   gsl_rng_set (rng, seed);       //se establce la semilla
   
-  packet_size = gsl_rng_uniform (rng);
+  for(i=0; i<1000; i++)
+    {
+      RESULT.value[i] = gsl_rng_uniform (rng);
+
+    }
  
   gsl_rng_free (rng);                           
  
-  return packet_size;
+  return 0;
   
 }
 
-double random_ranlxd1()
+int random_ranlxd1(int N)
 {
-  double packet_size;
+  int i;
   long seed;
   gsl_rng *rng;  //generador de # aleatorios
 
@@ -213,17 +254,21 @@ double random_ranlxd1()
   seed = time(NULL)*getpid();    //semilla que cambia con el tiempo
   gsl_rng_set (rng, seed);       //se establce la semilla
   
-  packet_size = gsl_rng_uniform (rng);
+  for(i=0; i<1000; i++)
+    {
+      RESULT.value[i] = gsl_rng_uniform (rng);
+
+    }
  
   gsl_rng_free (rng);                           
  
-  return packet_size;
+  return 0;
   
 }
 
-double random_cmrg()
+int random_cmrg(int N)
 {
-  double packet_size;
+  int i;
   long seed;
   gsl_rng *rng;  //generador de # aleatorios
 
@@ -232,14 +277,17 @@ double random_cmrg()
   seed = time(NULL)*getpid();    //semilla que cambia con el tiempo
   gsl_rng_set (rng, seed);       //se establce la semilla
   
-  packet_size = gsl_rng_uniform (rng);
+  for(i=0; i<1000; i++)
+    {
+      RESULT.value[i] = gsl_rng_uniform (rng);
+
+    }
  
   gsl_rng_free (rng);                           
  
-  return packet_size;
+  return 0;
   
 }
-
 
 //Programa Principal//
 
@@ -269,7 +317,7 @@ int main (int argc, char *argv[])
 
   datos  = (struct data *) malloc(N *sizeof(struct data));
 
-  value  = (double *) malloc(N *sizeof(double));
+  RESULT.value  = (double *) malloc(N *sizeof(double));
 
   X = (double *) malloc(N *sizeof(double));
 
@@ -298,31 +346,34 @@ int main (int argc, char *argv[])
 
   //GSFR4
 
+  random_gfsr4(N);
+  
   out1 = fopen("random_gfsr4.dat","w");
 
   for(i=0; i<1000; i++)
     {
-      value[i] =  random_gfsr4();
       
-      if((value[i] < xmax) && (value[i] > xmin))
+      if((RESULT.value[i] < xmax) && (RESULT.value[i] > xmin))
 	{
-	  fprintf(out1,"%lf\n", value[i]);
+	  fprintf(out1,"%lf\n", RESULT.value[i]);
      	}
     } 
   
   fclose(out1);
- 
+
+  
   //TAUS
+
+  random_taus(N);
 
   out2 = fopen("random_taus.dat","w");
 
   for(i=0; i<1000; i++)
     {
-      value[i] =  random_taus();
-      
-      if((value2[i] < xmax) && (value[i] > xmin))
-	{
-	  fprintf(out2,"%lf\n", value[i]);
+       
+    if((RESULT.value[i] < xmax) && (RESULT.value[i] > xmin))
+      {
+	  fprintf(out2,"%lf\n", RESULT.value[i]);
      	}
     } 
   
@@ -331,15 +382,16 @@ int main (int argc, char *argv[])
   
   //RAND48
 
+  random_rand48(N);
+
   out3 = fopen("random_rand48.dat","w");
 
   for(i=0; i<1000; i++)
     {
-      value[i] =  random_rand48();
-      
-      if((value[i] < xmax) && (value[i] > xmin))
+           
+      if((RESULT.value[i] < xmax) && (RESULT.value[i] > xmin))
 	{
-	  fprintf(out3,"%lf\n", value[i]);
+	  fprintf(out3,"%lf\n", RESULT.value[i]);
      	}
     } 
   
@@ -347,15 +399,17 @@ int main (int argc, char *argv[])
  
   //MT19937
 
+  random_mt19937(N);
+  
   out4 = fopen("random_mt19937.dat","w");
 
   for(i=0; i<1000; i++)
     {
-      value[i] =  random_mt19937();
+     
       
-      if((value[i] < xmax) && (value[i] > xmin))
+      if((RESULT.value[i] < xmax) && (RESULT.value[i] > xmin))
 	{
-	  fprintf(out4,"%lf\n", value[i]);
+	  fprintf(out4,"%lf\n", RESULT.value[i]);
      	}
     } 
   
@@ -363,31 +417,35 @@ int main (int argc, char *argv[])
  
   //RANLXS0
 
+  random_ranlxs0(N);
+  
   out5 = fopen("random_ranlxs0.dat","w");
 
   for(i=0; i<1000; i++)
     {
-      value[i] =  random_ranlxs0();
       
-      if((value[i] < xmax) && (value[i] > xmin))
+      
+      if((RESULT.value[i] < xmax) && (RESULT.value[i] > xmin))
 	{
-	  fprintf(out5,"%lf\n", value[i]);
+	  fprintf(out5,"%lf\n", RESULT.value[i]);
      	}
     } 
   
   fclose(out5);
 
-    //RANLXS1
-
+  //RANLXS1
+  
+  random_ranlxs1(N);
+  
   out6 = fopen("random_ranlxs1.dat","w");
 
   for(i=0; i<1000; i++)
     {
-      value[i] =  random_ranlxs1();
       
-      if((value[i] < xmax) && (value[i] > xmin))
+      
+      if((RESULT.value[i] < xmax) && (RESULT.value[i] > xmin))
 	{
-	  fprintf(out6,"%lf\n", value[i]);
+	  fprintf(out6,"%lf\n", RESULT.value[i]);
      	}
     } 
   
@@ -395,31 +453,35 @@ int main (int argc, char *argv[])
 
   //MRG
 
+  random_mrg(N);
+  
   out7 = fopen("random_mrg.dat","w");
 
   for(i=0; i<1000; i++)
     {
-      value[i] =  random_mrg();
       
-      if((value[i] < xmax) && (value[i] > xmin))
+      
+      if((RESULT.value[i] < xmax) && (RESULT.value[i] > xmin))
 	{
-	  fprintf(out7,"%lf\n", value[i]);
+	  fprintf(out7,"%lf\n", RESULT.value[i]);
      	}
     } 
   
   fclose(out7);
 
   //RANLUX
-
+  
+  random_ranlux(N);
+  
   out8 = fopen("random_ranlux.dat","w");
 
   for(i=0; i<1000; i++)
     {
-      value[i] =  random_ranlux();
       
-      if((value[i] < xmax) && (value[i] > xmin))
+      
+      if((RESULT.value[i] < xmax) && (RESULT.value[i] > xmin))
 	{
-	  fprintf(out8,"%lf\n", value[i]);
+	  fprintf(out8,"%lf\n", RESULT.value[i]);
      	}
     } 
   
@@ -427,15 +489,17 @@ int main (int argc, char *argv[])
 
   //RANLXD1
 
+  random_ranlxd1(N);
+  
   out9 = fopen("random_ranlxd1.dat","w");
 
   for(i=0; i<1000; i++)
     {
-      value[i] =  random_ranlxd1();
       
-      if((value[i] < xmax) && (value[i] > xmin))
+      
+      if((RESULT.value[i] < xmax) && (RESULT.value[i] > xmin))
 	{
-	  fprintf(out9,"%lf\n", value[i]);
+	  fprintf(out9,"%lf\n", RESULT.value[i]);
      	}
     } 
   
@@ -443,15 +507,17 @@ int main (int argc, char *argv[])
 
   //CMRG
 
+  random_cmrg(N);
+  
   out10 = fopen("random_cmrg.dat","w");
 
   for(i=0; i<1000; i++)
     {
-      value[i] =  random_cmrg();
       
-      if((value[i] < xmax) && (value[i] > xmin))
+      
+      if((RESULT.value[i] < xmax) && (RESULT.value[i] > xmin))
 	{
-	  fprintf(out10,"%lf\n", value[i]);
+	  fprintf(out10,"%lf\n", RESULT.value[i]);
      	}
     } 
   

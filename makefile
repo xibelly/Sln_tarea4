@@ -32,6 +32,11 @@ Integracion:
 	$(CC) $(CFLAGS) $@.c -o $@.o
 	$(CC) $@.o $(LFLAGS) -lm -lgsl -lgslcblas -o  $@.x		
 
+ajuste:
+	echo Estoy compilando $@.c
+	$(CC) $(CFLAGS) $@.c -o $@.o
+	$(CC) $@.o $(LFLAGS) -lm -lgsl -lgslcblas -o  $@.x		
+
 
 debug: 
 	echo Estoy compilando para debugear $@.c

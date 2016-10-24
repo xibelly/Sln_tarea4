@@ -27,6 +27,7 @@ Obtenga los valores de los parámetros a y b que mejor describen el modelo.
 FILE *lee = NULL;
 FILE *lee1 = NULL;
 FILE *lee2 = NULL;
+FILE *write = NULL;
 
 //Variables Globales
 
@@ -77,7 +78,7 @@ int expb_f (const gsl_vector * x, void *data, gsl_vector * f, char *file) //Func
       gsl_vector_set (f, i, (Yi - y[i])/sigma[i]);
      
     }
-  
+    
   fclose(lee1);
   return GSL_SUCCESS;
 
@@ -224,6 +225,7 @@ int main (int argc, char *argv[])
   /* Lectra de los datos a ser ajustados */
   
   lee = fopen(file,"r");
+  write = fopen("fdex_gaussian_noise.dat","w");
   for (i = 0; i < n; i++)
     {
      
@@ -237,7 +239,7 @@ int main (int argc, char *argv[])
 
       sigma[i] = 0.1;
             
-      printf ("data: %u %g %g \n",i,xi[i],y[i]);
+      fprintf (write,"%u %g %g \n",i,xi[i],y[i]);
     }
 
  

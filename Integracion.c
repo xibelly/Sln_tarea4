@@ -10,7 +10,7 @@ Pase los demas parametros del proceso de interpolacion como parametros a la func
 
 1) Crear una funcion que lea los datos interpolados que presentan la menor diferencia cuadratica media 
 
-2) 
+2) Integrar dichos datos de 0 a 2*M_PI usando cuadraturas adaptativas. 
  */
 
 
