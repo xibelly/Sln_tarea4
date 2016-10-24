@@ -76,7 +76,9 @@ int random_gfsr4(int N)
 
     }
  
-  gsl_rng_free (rng);                           
+  gsl_rng_free (rng);
+
+  printf("STATE OF RANDOM NUMBER GENERATION BY 'GFSR4': SUCCESS\n");
  
   return 0;
   
@@ -99,7 +101,9 @@ int random_taus(int N)
 
     }
  
-  gsl_rng_free (rng);                           
+  gsl_rng_free (rng);
+
+  printf("STATE OF RANDOM NUMBER GENERATION BY 'TAUS': SUCCESS\n");
  
   return 0;
   
@@ -123,7 +127,9 @@ int random_rand48(int N)
     }
  
   gsl_rng_free (rng);                           
- 
+
+  printf("STATE OF RANDOM NUMBER GENERATION BY 'RAND48': SUCCESS\n");
+  
   return 0;
   
 }
@@ -146,7 +152,9 @@ int random_mt19937(int N)
     }
  
   gsl_rng_free (rng);                           
- 
+
+  printf("STATE OF RANDOM NUMBER GENERATION BY 'MT19937': SUCCESS\n");
+  
   return 0;
   
 }
@@ -169,7 +177,9 @@ int random_ranlxs0(int N)
     }
  
   gsl_rng_free (rng);                           
- 
+
+  printf("STATE OF RANDOM NUMBER GENERATION BY 'RANLXS0': SUCCESS\n");
+  
   return 0;
   
 }
@@ -191,7 +201,9 @@ int random_ranlxs1(int N)
 
     }
  
-  gsl_rng_free (rng);                           
+  gsl_rng_free (rng);
+
+  printf("STATE OF RANDOM NUMBER GENERATION BY 'RANLXS1': SUCCESS\n");
  
   return 0;
   
@@ -215,7 +227,9 @@ int random_mrg(int N)
     }
  
   gsl_rng_free (rng);                           
- 
+
+  printf("STATE OF RANDOM NUMBER GENERATION BY 'MRG': SUCCESS\n");
+  
   return 0;
   
 }
@@ -238,7 +252,9 @@ int random_ranlux(int N)
     }
  
   gsl_rng_free (rng);                           
- 
+
+  printf("STATE OF RANDOM NUMBER GENERATION BY 'RANLUX': SUCCESS\n");
+  
   return 0;
   
 }
@@ -284,7 +300,9 @@ int random_cmrg(int N)
     }
  
   gsl_rng_free (rng);                           
- 
+
+  printf("STATE OF RANDOM NUMBER GENERATION BY 'CMRG': SUCCESS\n");
+  
   return 0;
   
 }
@@ -340,7 +358,10 @@ int main (int argc, char *argv[])
   xmin = X[p[0]];
 
   xmax = X[p[N-1]];
-  
+
+
+  printf("XMIN and XMAX are:\n");
+  printf("%lf %lf\n",xmin, xmax);
   
   //Generacion de numeros aleatorios//
 
