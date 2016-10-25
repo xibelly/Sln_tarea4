@@ -27,7 +27,7 @@ Obtenga los valores de los parámetros a y b que mejor describen el modelo.
 FILE *lee = NULL;
 FILE *lee1 = NULL;
 FILE *lee2 = NULL;
-FILE *write = NULL;
+
 
 //Variables Globales
 
@@ -150,11 +150,7 @@ int main (int argc, char *argv[])
 {
 
   int nread;
-  const gsl_rng_type * TT;
-  gsl_rng * rr;
-  unsigned int k;
-  double mu = 0.5;  //standard deviation
-
+ 
   const gsl_multifit_fdfsolver_type *T;
   gsl_multifit_fdfsolver *s;
   int status;
@@ -213,19 +209,11 @@ int main (int argc, char *argv[])
   f.p = p;
   f.params = &d;
 
-  /* create a generator chosen by the 
-     environment variable GSL_RNG_TYPE */
-
-  gsl_rng_env_setup();
-
-  TT = gsl_rng_default;
-  rr = gsl_rng_alloc (TT);
-
-  
+    
   /* Lectra de los datos a ser ajustados */
   
   lee = fopen(file,"r");
-  write = fopen("fdex_gaussian_noise.dat","w");
+ 
   for (i = 0; i < n; i++)
     {
      
@@ -233,13 +221,11 @@ int main (int argc, char *argv[])
 
       xi[i] = X;
       
-      k = gsl_ran_poisson (rr, mu); //Gaussian distribution
-
-      y[i] = F_x + k;  //Funcion interpolada con ruido gaussiano
+      y[i] = F_x;
 
       sigma[i] = 0.1;
             
-      fprintf (write,"%u %g %g \n",i,xi[i],y[i]);
+      
     }
 
  
@@ -293,8 +279,7 @@ int main (int argc, char *argv[])
   gsl_multifit_fdfsolver_free (s);
   gsl_matrix_free (covar);
   gsl_rng_free (r);
-  gsl_rng_free (rr);
-  fclose(lee);
+   fclose(lee);
   return 0;
 }
 
