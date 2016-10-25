@@ -32,6 +32,11 @@ Fourier_transforms2:
 	$(CC) $(CFLAGS) $@.c -o $@.o
 	$(CC) $@.o $(LFLAGS) -lm -lfftw3 -o  $@.x
 
+Fourier_transforms3:
+	echo Estoy compilando $@.c
+	$(CC) $(CFLAGS) $@.c -o $@.o
+	$(CC) $@.o $(LFLAGS) -lm -lfftw3 -o  $@.x
+
 
 Integracion:
 	echo Estoy compilando $@.c
@@ -42,6 +47,12 @@ ajuste:
 	echo Estoy compilando $@.c
 	$(CC) $(CFLAGS) $@.c -o $@.o
 	$(CC) $@.o $(LFLAGS) -lm -lgsl -lgslcblas -o  $@.x		
+
+random_noise:
+	echo Estoy compilando $@.c
+	$(CC) $(CFLAGS) $@.c -o $@.o
+	$(CC) $@.o $(LFLAGS) -lm -lgsl -lgslcblas -o  $@.x		
+
 
 
 debug: 

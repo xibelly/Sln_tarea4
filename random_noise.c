@@ -103,7 +103,7 @@ int main (int argc, char *argv[])
 
       y[i] = datos[i].f + k;  //Funcion interpolada con ruido gaussiano
                 
-      x[i] = datos[i].x + k;
+      x[i] = datos[i].x;
 
       fprintf (write,"%g %g \n", x[i] , y[i]);
     }

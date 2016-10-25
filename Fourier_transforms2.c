@@ -159,7 +159,7 @@ int main (int argc, char *argv[])
     }
   fclose(input);
 
-  printf("THE STATE OF SAMPLE DATA FOR FRECUENCY 1 IS: SUCESS\n");
+  printf("THE STATE OF SAMPLE DATA FOR FRECUENCY 0.5 IS: SUCESS\n");
 
   //Se calculan la respectiva transformada de Fourier//
 

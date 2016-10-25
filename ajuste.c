@@ -18,7 +18,6 @@ Obtenga los valores de los parámetros a y b que mejor describen el modelo.
 #include <stdlib.h>
 #include <stdio.h>
 #include <gsl/gsl_rng.h>
-#include <gsl/gsl_randist.h>
 #include <gsl/gsl_vector.h>
 #include <gsl/gsl_blas.h>
 #include <gsl/gsl_multifit_nlin.h>
@@ -45,7 +44,7 @@ struct data {
 
 
 //Funciones
-int expb_f (const gsl_vector * x, void *data, gsl_vector * f, char *file) //Funcion que retorna un puntero el cual guarda los valores de f(t,params)
+int expb_f (const gsl_vector * x, void *data, gsl_vector * f) //Funcion que retorna un puntero el cual guarda los valores de f(t,params)
 {
   int nread;
   
@@ -69,6 +68,8 @@ int expb_f (const gsl_vector * x, void *data, gsl_vector * f, char *file) //Func
     {
       nread = fscanf(lee1,"%lf %lf",&X, &F_x);
 
+      //printf("%lf %lf\n",X, F_x);
+      
       /* Model : Yi =  A * t * sin(b * t)*/
 
       double t = X;
@@ -80,12 +81,15 @@ int expb_f (const gsl_vector * x, void *data, gsl_vector * f, char *file) //Func
     }
     
   fclose(lee1);
-  return GSL_SUCCESS;
 
   printf("THE MODEL IS CREATED CORRECTLY\n");
+  
+  return GSL_SUCCESS;
+
+  
 }
 
-int expb_df (const gsl_vector * x, void *data, gsl_matrix * J, char *file)//Funcion que almacena la matriz resultante J
+int expb_df (const gsl_vector * x, void *data, gsl_matrix * J)//Funcion que almacena la matriz resultante J
 {
 
   int nread;
@@ -105,6 +109,7 @@ int expb_df (const gsl_vector * x, void *data, gsl_matrix * J, char *file)//Func
   for (i = 0; i <n; i++)
     {
       nread = fscanf(lee2,"%lf %lf",&X,&F_x);
+      
       /* Jacobian matrix J(i,j) = dfi / dxj, */
       /* where fi = (Yi - yi)/sigma[i],      */
       /*       Yi = A * t * sin(B * t)   */
@@ -114,7 +119,7 @@ int expb_df (const gsl_vector * x, void *data, gsl_matrix * J, char *file)//Func
       double t = X;
       double s = sigma[i];
       double e = t * sin(b * t); //Derivada respecto al parametro A
-      double e2 = t * t * sin(b * t) * cos(b * t); //Derivada respecto al parametro b
+      double e2 = t * t * cos(b * t); //Derivada respecto al parametro b
       
       gsl_matrix_set (J, i, 0, e/s); 
       
@@ -125,6 +130,7 @@ int expb_df (const gsl_vector * x, void *data, gsl_matrix * J, char *file)//Func
       
       
     }
+
   printf("THE MATRICES ARE STORED CORRECTLY\n");
   fclose(lee2);
   return GSL_SUCCESS;
@@ -132,9 +138,10 @@ int expb_df (const gsl_vector * x, void *data, gsl_matrix * J, char *file)//Func
 
 int expb_fdf (const gsl_vector * x, void *data,gsl_vector * f, gsl_matrix * J)//Se crea la funcion que sera minimizada
 {
-  expb_f (x, data, f, file);
-  expb_df (x, data, J, file);
-  
+  expb_f (x, data, f);
+  expb_df (x, data, J);
+
+   
   return GSL_SUCCESS;
 }
 
@@ -253,7 +260,7 @@ int main (int argc, char *argv[])
 
       status = gsl_multifit_test_delta (s->dx, s->x,1e-4, 1e-4);//Funcion que estima de manera adecuada los parametros
     }
-  while (status == GSL_CONTINUE && iter < 500);
+  while (status == GSL_CONTINUE && iter < 1000);
 
   
   
