@@ -1,8 +1,8 @@
-plot "fdex_sample.dat" title  "fdex_sample.dat" 
+plot "fdex.dat" title  "fdex.dat" 
 set terminal png
-set output "grafica_inter_akima_per.png" 
+set output "grafica_fdex_inter_lineal.png" 
 set pointsize 1.5
 set xlabe 'x'
 set ylabe 'f(x)'
 set key top right
-replot "inter_akima_per.dat" title "inter_akima_per.dat" 
+replot "inter_lineal.dat" title "inter_lineal.dat" 

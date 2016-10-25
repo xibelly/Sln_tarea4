@@ -24,7 +24,7 @@ c) 0.1
 
 
 /*
-  NOTA: Este programa resuelve el CASO a)
+  NOTA: Este programa resuelve el CASO b)
  */
 
 #include<stdio.h>
@@ -76,7 +76,7 @@ void fourier(int N)
 
   fftw_execute(my_plan);
 
-  output = fopen("FT_1.dat","w");
+  output = fopen("FT_0.5.dat","w");
 
   for(i=0; i<N; i++)
     {
@@ -94,7 +94,7 @@ void fourier(int N)
 
   fftw_execute(my_plan2);
 
-  output2 = fopen("IFT_1.dat","w");
+  output2 = fopen("IFT_0.5.dat","w");
 
   for(i=0; i<N; i++)
     {
@@ -141,15 +141,15 @@ int main (int argc, char *argv[])
   
   //SE MUESTREA LA FUNCION  f(x) = x*sin(x)//
 
-  //CASO a)
+  //CASO b)
 
  
 
-  input=fopen("fdex_fourier1.dat","w");
+  input=fopen("fdex_fourier0.5.dat","w");
   
   for (i = 0; i < N; i++)
     {
-      datos.x[i] = dx * i;
+      datos.x[i] = dx * (i+0.5);
 
       datos.f[i] =  datos.x[i] *sin (datos.x[i]);
 

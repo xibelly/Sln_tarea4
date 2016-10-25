@@ -27,6 +27,12 @@ Fourier_transforms:
 	$(CC) $(CFLAGS) $@.c -o $@.o
 	$(CC) $@.o $(LFLAGS) -lm -lfftw3 -o  $@.x
 
+Fourier_transforms2:
+	echo Estoy compilando $@.c
+	$(CC) $(CFLAGS) $@.c -o $@.o
+	$(CC) $@.o $(LFLAGS) -lm -lfftw3 -o  $@.x
+
+
 Integracion:
 	echo Estoy compilando $@.c
 	$(CC) $(CFLAGS) $@.c -o $@.o
