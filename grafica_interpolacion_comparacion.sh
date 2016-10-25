@@ -26,7 +26,7 @@ echo "Introduce the output file:"
 read archivo_salida
 
 
-echo "plot "$data1" w d  title  "$data1" "  > script_grafica_interpolacion_comparacion.gp
+echo "plot "$data1" w p  title  "$data1" "  > script_grafica_interpolacion_comparacion.gp
 
 echo "replot "$data2" w l title "$data2" "  >> script_grafica_interpolacion_comparacion.gp
 
