@@ -68,4 +68,4 @@ clean:
 	rm -rf *.o
 	rm -rf *.a
 	rm -rf *.so
-	rm *.x
+	rm *.x	

@@ -95,7 +95,7 @@ int main (int argc, char *argv[])
 
   suma = 0.0;
 
-  dx = 2 * M_PI/ N;
+  dx = 2.0 * M_PI/ N;
 
   out = fopen("fdex_sample.dat","w");
   
