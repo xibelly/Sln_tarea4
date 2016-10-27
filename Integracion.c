@@ -45,15 +45,16 @@ struct data *datos;
 double f ()//function x*sin(x) 
 {
   int i;
-  double f;
+  double f=0.0;
 
+  
   for(i=0; i<N; i++)
     {
-      f = datos[i].f;
+      f += datos[i].f;  
 
     }
-     
-  return f;
+  
+  return f/N;
 }
 
 
