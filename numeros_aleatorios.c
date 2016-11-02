@@ -4,11 +4,16 @@ Xibelly Eliseth Mosquera Escobar
 
 Solucion punto 2 Tarea 4 COMPUTACION CIENTIFICA AVANZADA
 
-1) Vamos a leer los datos que correponden a la interpolacion con la menor diferencia cuadratica media -> akima_periodico
+1) Vamos a generar 1000 numeros aleatorios entre 0 y 2*M_PI
 
-2) tomamos el valos min y max
+2) Con dichos puntos genramos la funcion f(x) = x*sin(x) -> se escribe en disco
 
-3) con estos datos vamos a generar 1000 numeros aleatorios uniformamente distribuidos
+3)Interpolamos la funcion anterior con la interpolacion que tiene la menor diferencia cuadratica media -> akima_periodico. -> se imprime en disco.
+
+Nota: Para interpolar debemos ordenar de forma creciente los datos, por lo que usaremos gsl_sort.
+
+NOta: Se hacen grafiacas de la funcion original con la interpolacion obtenida a traves de cada uno de los metodos de generacion de numeros aleatorios utilizados.
+
  */
 #include<stdio.h>
 #include<stdlib.h>
@@ -19,11 +24,15 @@ Solucion punto 2 Tarea 4 COMPUTACION CIENTIFICA AVANZADA
 #include <gsl/gsl_sort_double.h>
 
 
+#include <gsl/gsl_errno.h>
+#include <gsl/gsl_spline.h>
+
+
+#define N 1000
+
 //Variables globales//
 
-int N;
-char *file;
-
+FILE *out = NULL;
 FILE *out1 = NULL;
 FILE *out2 = NULL;
 FILE *out3 = NULL;
@@ -35,30 +44,49 @@ FILE *out8 = NULL;
 FILE *out9 = NULL;
 FILE *out10 = NULL;
 
+double *x, *y;
+double value;
+  
+gsl_interp_accel *acelerador;
+gsl_spline *interpolador;
+
+
 //Estructuras//
 
-struct data   
-{
-  double x, f;
-  
-}; 
-struct data *datos;
+
 
 struct data_result   
 {
+  
   double *value;
   
 }; 
 struct data_result RESULT; 
 
  
-//Llamados a subrutinas//
-
-#include "input.c"
-
 //Funciones//
 
-int random_gfsr4(int N)
+double interpolador_akima_per(double xo)
+{
+  
+  
+  acelerador   = gsl_interp_accel_alloc();
+  interpolador = gsl_spline_alloc(gsl_interp_akima_periodic, (size_t) N);
+  gsl_spline_init(interpolador, x, y, (size_t) N);
+  
+  value = gsl_spline_eval(interpolador, xo, acelerador);
+  
+  gsl_spline_free(interpolador);
+  gsl_interp_accel_free(acelerador);
+
+  
+  
+  return value;
+  
+}
+
+
+int random_gfsr4()
 {
   
   int i;
@@ -70,7 +98,7 @@ int random_gfsr4(int N)
   seed = time(NULL)*getpid();    //semilla que cambia con el tiempo
   gsl_rng_set (rng, seed);       //se establce la semilla
   
-  for(i=0; i<1000; i++)
+  for(i=0; i<N; i++)
     {
       RESULT.value[i] = gsl_rng_uniform (rng);
 
@@ -84,7 +112,7 @@ int random_gfsr4(int N)
   
 }
 
-int random_taus(int N)
+int random_taus()
 {
   int i;
   long seed;
@@ -95,9 +123,9 @@ int random_taus(int N)
   seed = time(NULL)*getpid();    //semilla que cambia con el tiempo
   gsl_rng_set (rng, seed);       //se establce la semilla
   
-  for(i=0; i<1000; i++)
+  for(i=0; i<N; i++)
     {
-      RESULT.value[i] = gsl_rng_uniform (rng);
+      RESULT.value[i] =  gsl_rng_uniform (rng);
 
     }
  
@@ -109,7 +137,7 @@ int random_taus(int N)
   
 }
 
-int random_rand48(int N)
+int random_rand48()
 {
   int i;
   long seed;
@@ -120,9 +148,9 @@ int random_rand48(int N)
   seed = time(NULL)*getpid();    //semilla que cambia con el tiempo
   gsl_rng_set (rng, seed);       //se establce la semilla
   
-  for(i=0; i<1000; i++)
-    {
-      RESULT.value[i] = gsl_rng_uniform (rng);
+  for(i=0; i<N; i++)
+    { 
+      RESULT.value[i] =gsl_rng_uniform (rng);
 
     }
  
@@ -134,7 +162,7 @@ int random_rand48(int N)
   
 }
 
-int random_mt19937(int N)
+int random_mt19937()
 {
   int i;
   long seed;
@@ -145,7 +173,7 @@ int random_mt19937(int N)
   seed = time(NULL)*getpid();    //semilla que cambia con el tiempo
   gsl_rng_set (rng, seed);       //se establce la semilla
   
-  for(i=0; i<1000; i++)
+  for(i=0; i<N; i++)
     {
       RESULT.value[i] = gsl_rng_uniform (rng);
 
@@ -159,7 +187,7 @@ int random_mt19937(int N)
   
 }
 
-int random_ranlxs0(int N)
+int random_ranlxs0()
 {
   int i;
   long seed;
@@ -170,9 +198,9 @@ int random_ranlxs0(int N)
   seed = time(NULL)*getpid();    //semilla que cambia con el tiempo
   gsl_rng_set (rng, seed);       //se establce la semilla
   
-  for(i=0; i<1000; i++)
+  for(i=0; i<N; i++)
     {
-      RESULT.value[i] = gsl_rng_uniform (rng);
+      RESULT.value[i] =gsl_rng_uniform (rng);
 
     }
  
@@ -184,7 +212,7 @@ int random_ranlxs0(int N)
   
 }
 
-int random_ranlxs1(int N)
+int random_ranlxs1()
 {
   int i;
   long seed;
@@ -195,7 +223,7 @@ int random_ranlxs1(int N)
   seed = time(NULL)*getpid();    //semilla que cambia con el tiempo
   gsl_rng_set (rng, seed);       //se establce la semilla
   
-  for(i=0; i<1000; i++)
+  for(i=0; i<N; i++)
     {
       RESULT.value[i] = gsl_rng_uniform (rng);
 
@@ -209,7 +237,7 @@ int random_ranlxs1(int N)
   
 }
 
-int random_mrg(int N)
+int random_mrg()
 {
   int i;
   long seed;
@@ -220,7 +248,7 @@ int random_mrg(int N)
   seed = time(NULL)*getpid();    //semilla que cambia con el tiempo
   gsl_rng_set (rng, seed);       //se establce la semilla
   
-  for(i=0; i<1000; i++)
+  for(i=0; i<N; i++)
     {
       RESULT.value[i] = gsl_rng_uniform (rng);
 
@@ -234,7 +262,7 @@ int random_mrg(int N)
   
 }
 
-int random_ranlux(int N)
+int random_ranlux()
 {
   int i;
   long seed;
@@ -245,7 +273,7 @@ int random_ranlux(int N)
   seed = time(NULL)*getpid();    //semilla que cambia con el tiempo
   gsl_rng_set (rng, seed);       //se establce la semilla
   
-  for(i=0; i<1000; i++)
+  for(i=0; i<N; i++)
     {
       RESULT.value[i] = gsl_rng_uniform (rng);
 
@@ -259,7 +287,7 @@ int random_ranlux(int N)
   
 }
 
-int random_ranlxd1(int N)
+int random_ranlxd1()
 {
   int i;
   long seed;
@@ -270,7 +298,7 @@ int random_ranlxd1(int N)
   seed = time(NULL)*getpid();    //semilla que cambia con el tiempo
   gsl_rng_set (rng, seed);       //se establce la semilla
   
-  for(i=0; i<1000; i++)
+  for(i=0; i<N; i++)
     {
       RESULT.value[i] = gsl_rng_uniform (rng);
 
@@ -282,7 +310,7 @@ int random_ranlxd1(int N)
   
 }
 
-int random_cmrg(int N)
+int random_cmrg()
 {
   int i;
   long seed;
@@ -293,7 +321,7 @@ int random_cmrg(int N)
   seed = time(NULL)*getpid();    //semilla que cambia con el tiempo
   gsl_rng_set (rng, seed);       //se establce la semilla
   
-  for(i=0; i<1000; i++)
+  for(i=0; i<N; i++)
     {
       RESULT.value[i] = gsl_rng_uniform (rng);
 
@@ -305,245 +333,441 @@ int random_cmrg(int N)
   
   return 0;
   
-}
+  }
 
 //Programa Principal//
 
 int main (int argc, char *argv[]) 
 {
   int i;
-  double xmin, xmax;
-  double *value;
-  double *X;
-
-  printf("%d\n",argc);
+  double xo, yo;
+  double *xx, *ff;
+  double dx;
+  double *X, *F;
   
-  if(argc != 3)
-    {
-      printf("ERROR--> use as:\n");
-      printf("%s Nline file\n",argv[0]);
-      exit(0);  
-    }
-
   //Carga de parametros//
 
-  N = atoi(argv[1]);
-
-  file = argv[2];
-
-  printf("%s %d %s\n",argv[0], N, file);
-
-  datos  = (struct data *) malloc(N *sizeof(struct data));
-
+  
   RESULT.value  = (double *) malloc(N *sizeof(double));
 
-  X = (double *) malloc(N *sizeof(double));
+  X  = (double *) malloc(N *sizeof(double));
+
+  F  = (double *) malloc(N *sizeof(double));
+  
+  
+  y = (double *) malloc(N *sizeof(double));
+
+  x = (double *) malloc(N *sizeof(double));
+
+  
+  xx  = (double *) malloc(N *sizeof(double));
+  
+  ff  = (double *) malloc(N *sizeof(double));
+
+  
 
   size_t p[N];
 
   int k = N;
 
+  dx = 2 * M_PI / N;
 
-  //Lectura archivos -carga de datos-//
-  
-  read_file(file,N);
+  out = fopen("fdex_random.dat","w");
 
   for(i=0; i<N; i++)
     {
-      X[i] = datos[i].x;
+
+      xx[i] =(dx) * i;
+      
+      ff[i] = (xx[i])* sin (xx[i]);
+
+      fprintf (out,"%g %g\n", xx[i], ff[i]);
+      
     }
 
-  gsl_sort_smallest_index (p, k, X, 1, N);//Se ordenan los datos de forma creciente
-
-  xmin = X[p[0]];
-
-  xmax = X[p[N-1]];
-
-
-  printf("XMIN and XMAX are:\n");
-  printf("%lf %lf\n",xmin, xmax);
+  fclose(out);
+  
   
   //Generacion de numeros aleatorios//
 
   //GSFR4
 
-  random_gfsr4(N);
-  
+  random_gfsr4();
+
   out1 = fopen("random_gfsr4.dat","w");
 
-  for(i=0; i<1000; i++)
+  for(i=0; i<N; i++)
     {
+
+      X[i] = 2.0 * M_PI * RESULT.value[i];
       
-      if((RESULT.value[i] < xmax) && (RESULT.value[i] > xmin))
-	{
-	  fprintf(out1,"%lf\n", RESULT.value[i]);
-     	}
-    } 
+      F[i] = X[i] * sin (X[i]);
+      
+    }
+
+  
+  gsl_sort_smallest_index (p, k, X, 1, N);//Se ordenan los datos de forma creciente
+
+  //INTERPOLACION AKIMA PERIODICA
+
+  for(i=0; i<N; i++)
+    {
+      x[i] = X[p[i]];
+
+      y[i] = F[p[i]];
+    }
+    
+    
+  for (xo = x[0]; xo < x[N-1]; xo = xo + 0.01)
+    {
+      yo = interpolador_akima_per(xo);
+      fprintf (out1,"%g %g\n", xo, yo);
+    }
+  
   
   fclose(out1);
 
   
+  
   //TAUS
 
-  random_taus(N);
+  random_taus();
 
   out2 = fopen("random_taus.dat","w");
 
-  for(i=0; i<1000; i++)
+  for(i=0; i<N; i++)
     {
-       
-    if((RESULT.value[i] < xmax) && (RESULT.value[i] > xmin))
-      {
-	  fprintf(out2,"%lf\n", RESULT.value[i]);
-     	}
-    } 
+
+      X[i] = 2.0 * M_PI * RESULT.value[i];
+      
+      F[i] = X[i] * sin (X[i]);
+      
+    }
+
+  
+  gsl_sort_smallest_index (p, k, X, 1, N);//Se ordenan los datos de forma creciente
+
+  //INTERPOLACION AKIMA PERIODICA
+
+  for(i=0; i<N; i++)
+    {
+      x[i] = X[p[i]];
+
+      y[i] = F[p[i]];
+    }
+    
+    
+  for (xo = x[0]; xo < x[N-1]; xo = xo + 0.01)
+    {
+      yo = interpolador_akima_per(xo);
+      fprintf (out2,"%g %g\n", xo, yo);
+    }
+  
   
   fclose(out2);
+
   
   
   //RAND48
 
-  random_rand48(N);
+  random_rand48();
 
   out3 = fopen("random_rand48.dat","w");
 
-  for(i=0; i<1000; i++)
+  for(i=0; i<N; i++)
     {
-           
-      if((RESULT.value[i] < xmax) && (RESULT.value[i] > xmin))
-	{
-	  fprintf(out3,"%lf\n", RESULT.value[i]);
-     	}
-    } 
+
+      X[i] = 2.0 * M_PI * RESULT.value[i];
+      
+      F[i] = X[i] * sin (X[i]);
+      
+    }
+
+  
+  gsl_sort_smallest_index (p, k, X, 1, N);//Se ordenan los datos de forma creciente
+
+  //INTERPOLACION AKIMA PERIODICA
+
+  for(i=0; i<N; i++)
+    {
+      x[i] = X[p[i]];
+
+      y[i] = F[p[i]];
+    }
+    
+    
+  for (xo = x[0]; xo < x[N-1]; xo = xo + 0.01)
+    {
+      yo = interpolador_akima_per(xo);
+      fprintf (out3,"%g %g\n", xo, yo);
+    }
+  
   
   fclose(out3);
- 
+
   //MT19937
 
-  random_mt19937(N);
+  random_mt19937();
   
   out4 = fopen("random_mt19937.dat","w");
 
-  for(i=0; i<1000; i++)
+  for(i=0; i<N; i++)
     {
-     
+
+      X[i] = 2.0 * M_PI * RESULT.value[i];
       
-      if((RESULT.value[i] < xmax) && (RESULT.value[i] > xmin))
-	{
-	  fprintf(out4,"%lf\n", RESULT.value[i]);
-     	}
-    } 
+      F[i] = X[i] * sin (X[i]);
+      
+    }
+
+  
+  gsl_sort_smallest_index (p, k, X, 1, N);//Se ordenan los datos de forma creciente
+
+  //INTERPOLACION AKIMA PERIODICA
+
+  for(i=0; i<N; i++)
+    {
+      x[i] = X[p[i]];
+
+      y[i] = F[p[i]];
+    }
+    
+    
+  for (xo = x[0]; xo < x[N-1]; xo = xo + 0.01)
+    {
+      yo = interpolador_akima_per(xo);
+      fprintf (out4,"%g %g\n", xo, yo);
+    }
+  
   
   fclose(out4);
- 
+
+  
+  
   //RANLXS0
 
-  random_ranlxs0(N);
+  random_ranlxs0();
   
   out5 = fopen("random_ranlxs0.dat","w");
 
-  for(i=0; i<1000; i++)
+  for(i=0; i<N; i++)
     {
+
+      X[i] = 2.0 * M_PI * RESULT.value[i];
       
+      F[i] = X[i] * sin (X[i]);
       
-      if((RESULT.value[i] < xmax) && (RESULT.value[i] > xmin))
-	{
-	  fprintf(out5,"%lf\n", RESULT.value[i]);
-     	}
-    } 
+    }
+
+  
+  gsl_sort_smallest_index (p, k, X, 1, N);//Se ordenan los datos de forma creciente
+
+  //INTERPOLACION AKIMA PERIODICA
+
+  for(i=0; i<N; i++)
+    {
+      x[i] = X[p[i]];
+
+      y[i] = F[p[i]];
+    }
+    
+    
+  for (xo = x[0]; xo < x[N-1]; xo = xo + 0.01)
+    {
+      yo = interpolador_akima_per(xo);
+      fprintf (out5,"%g %g\n", xo, yo);
+    }
+  
   
   fclose(out5);
 
+
   //RANLXS1
   
-  random_ranlxs1(N);
+  random_ranlxs1();
   
   out6 = fopen("random_ranlxs1.dat","w");
 
-  for(i=0; i<1000; i++)
+  for(i=0; i<N; i++)
     {
+
+      X[i] = 2.0 * M_PI * RESULT.value[i];
       
+      F[i] = X[i] * sin (X[i]);
       
-      if((RESULT.value[i] < xmax) && (RESULT.value[i] > xmin))
-	{
-	  fprintf(out6,"%lf\n", RESULT.value[i]);
-     	}
-    } 
+    }
+
   
+  gsl_sort_smallest_index (p, k, X, 1, N);//Se ordenan los datos de forma creciente
+
+  //INTERPOLACION AKIMA PERIODICA
+
+  for(i=0; i<N; i++)
+    {
+      x[i] = X[p[i]];
+
+      y[i] = F[p[i]];
+    }
+    
+    
+  for (xo = x[0]; xo < x[N-1]; xo = xo + 0.01)
+    {
+      yo = interpolador_akima_per(xo);
+      fprintf (out6,"%g %g\n", xo, yo);
+    }
+  
+
   fclose(out6);
 
   //MRG
 
-  random_mrg(N);
+  random_mrg();
   
   out7 = fopen("random_mrg.dat","w");
 
-  for(i=0; i<1000; i++)
+  for(i=0; i<N; i++)
     {
+
+      X[i] = 2.0 * M_PI * RESULT.value[i];
       
+      F[i] = X[i] * sin (X[i]);
       
-      if((RESULT.value[i] < xmax) && (RESULT.value[i] > xmin))
-	{
-	  fprintf(out7,"%lf\n", RESULT.value[i]);
-     	}
-    } 
+    }
+
+  
+  gsl_sort_smallest_index (p, k, X, 1, N);//Se ordenan los datos de forma creciente
+
+  //INTERPOLACION AKIMA PERIODICA
+
+  for(i=0; i<N; i++)
+    {
+      x[i] = X[p[i]];
+
+      y[i] = F[p[i]];
+    }
+    
+    
+  for (xo = x[0]; xo < x[N-1]; xo = xo + 0.01)
+    {
+      yo = interpolador_akima_per(xo);
+      fprintf (out7,"%g %g\n", xo, yo);
+    }
+  
   
   fclose(out7);
 
   //RANLUX
   
-  random_ranlux(N);
+  random_ranlux();
   
   out8 = fopen("random_ranlux.dat","w");
 
-  for(i=0; i<1000; i++)
+ for(i=0; i<N; i++)
     {
+
+      X[i] = 2.0 * M_PI * RESULT.value[i];
       
+      F[i] = X[i] * sin (X[i]);
       
-      if((RESULT.value[i] < xmax) && (RESULT.value[i] > xmin))
-	{
-	  fprintf(out8,"%lf\n", RESULT.value[i]);
-     	}
-    } 
+    }
+
+  
+  gsl_sort_smallest_index (p, k, X, 1, N);//Se ordenan los datos de forma creciente
+
+  //INTERPOLACION AKIMA PERIODICA
+
+  for(i=0; i<N; i++)
+    {
+      x[i] = X[p[i]];
+
+      y[i] = F[p[i]];
+    }
+    
+    
+  for (xo = x[0]; xo < x[N-1]; xo = xo + 0.01)
+    {
+      yo = interpolador_akima_per(xo);
+      fprintf (out8,"%g %g\n", xo, yo);
+    }
+  
   
   fclose(out8);
 
+
   //RANLXD1
 
-  random_ranlxd1(N);
+  random_ranlxd1();
   
   out9 = fopen("random_ranlxd1.dat","w");
 
-  for(i=0; i<1000; i++)
+  for(i=0; i<N; i++)
     {
+
+      X[i] = 2.0 * M_PI * RESULT.value[i];
       
+      F[i] = X[i] * sin (X[i]);
       
-      if((RESULT.value[i] < xmax) && (RESULT.value[i] > xmin))
-	{
-	  fprintf(out9,"%lf\n", RESULT.value[i]);
-     	}
-    } 
+    }
+
+  
+  gsl_sort_smallest_index (p, k, X, 1, N);//Se ordenan los datos de forma creciente
+
+  //INTERPOLACION AKIMA PERIODICA
+
+  for(i=0; i<N; i++)
+    {
+      x[i] = X[p[i]];
+
+      y[i] = F[p[i]];
+    }
+    
+    
+  for (xo = x[0]; xo < x[N-1]; xo = xo + 0.01)
+    {
+      yo = interpolador_akima_per(xo);
+      fprintf (out9,"%g %g\n", xo, yo);
+    }
+  
   
   fclose(out9);
 
+
   //CMRG
 
-  random_cmrg(N);
+  random_cmrg();
   
   out10 = fopen("random_cmrg.dat","w");
-
-  for(i=0; i<1000; i++)
+  
+  for(i=0; i<N; i++)
     {
       
+      X[i] = 2.0 * M_PI * RESULT.value[i];
       
-      if((RESULT.value[i] < xmax) && (RESULT.value[i] > xmin))
-	{
-	  fprintf(out10,"%lf\n", RESULT.value[i]);
-     	}
-    } 
+      F[i] = X[i] * sin (X[i]);
+      
+    }
+  
+  
+  gsl_sort_smallest_index (p, k, X, 1, N);//Se ordenan los datos de forma creciente
+  
+  //INTERPOLACION AKIMA PERIODICA
+  
+  for(i=0; i<N; i++)
+    {
+      x[i] = X[p[i]];
+      
+      y[i] = F[p[i]];
+    }
+    
+    
+  for (xo = x[0]; xo < x[N-1]; xo = xo + 0.01)
+    {
+      yo = interpolador_akima_per(xo);
+      fprintf (out10,"%g %g\n", xo, yo);
+    }
+  
   
   fclose(out10);
-
 
  
   
